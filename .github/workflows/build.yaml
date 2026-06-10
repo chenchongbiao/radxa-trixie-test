@@ -3,6 +3,7 @@ concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"
 jobs:
   build:
+    environment: github-pages
     permissions:
       contents: "write"
       id-token: "write"
