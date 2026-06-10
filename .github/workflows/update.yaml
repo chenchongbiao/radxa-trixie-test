@@ -7,16 +7,6 @@ jobs:
       contents: "write"
     runs-on: "ubuntu-latest"
     steps:
-    - env:
-        SECRETS: "${{ toJSON(secrets) }}"
-      name: "Secret tests"
-      uses: "actions/github-script@v9"
-      with:
-        script: |
-          const secrets = JSON.parse(process.env.SECRETS);
-          if (secrets.GPG_KEY === undefined || secrets.RADXA_APT_KEY_2024 === undefined) {
-              core.setFailed('Required secrets are unset!');
-          }
     - name: "Checkout rsdk"
       uses: "actions/checkout@v6"
       with:
@@ -28,7 +18,8 @@ jobs:
         path: ".infra-repo"
         token: "${{secrets.GIT_PUSH_TOKEN}}"
     - env:
-        GH_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        GH_TOKEN: "${{ secrets.ACTION_TOKEN }}"
+        RSDK_PACKAGE_ORG: chenchongbiao
       id: "build"
       name: "Update pkgs.json"
       run: |
